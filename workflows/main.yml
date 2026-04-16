@@ -1,0 +1,22 @@
+# GitHub Actions の例
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # ここで「GitHub上のサーバーで動かす」と指定
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build  # ここで GitHub 上に dist フォルダができる
+          
+      - name: Deploy to Lolipop
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "dist/*"
+          target: "/home/ajeeharu/lolipop-container/rising-system/frontend/" 
+          strip_components: 1 # distフォルダそのものではなく、中身だけ送る設定
