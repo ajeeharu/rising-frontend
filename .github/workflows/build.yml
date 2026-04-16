@@ -31,8 +31,8 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "dist/*" # distフォルダの中身を対象にする
           target: "/home/users/0/main.jp-web-server/web/rising/frontend/" # ロリポップの公開ディレクトリ
           strip_components: 1 # dist というフォルダ名自体を除去して中身だけ送る
