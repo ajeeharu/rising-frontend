@@ -1,22 +1,38 @@
-# GitHub Actions の例
+name: Build and Deploy React
+
+on:
+  push:
+    branches:
+      - main  # mainブランチにpushしたら動く
+  workflow_dispatch:
+
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # ここで「GitHub上のサーバーで動かす」と指定
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install and Build
-        run: |
-          npm install
-          npm run build  # ここで GitHub 上に dist フォルダができる
-          
-      - name: Deploy to Lolipop
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build  # ここで仮想サーバー内に dist フォルダができる
+
+      - name: Deploy to Lolipop via SCP
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "dist/*"
-          target: "/home/ajeeharu/lolipop-container/rising-system/frontend/" 
-          strip_components: 1 # distフォルダそのものではなく、中身だけ送る設定
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          source: "dist/*" # distフォルダの中身を対象にする
+          target: "/home/users/0/main.jp-web-server/web/rising/frontend/" # ロリポップの公開ディレクトリ
+          strip_components: 1 # dist というフォルダ名自体を除去して中身だけ送る
