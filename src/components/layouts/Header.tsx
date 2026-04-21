@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import logo from '../../../assets/images/rising-logo.jpg';
 
 export const Header = () => {
   return (
@@ -11,8 +12,8 @@ export const Header = () => {
         </button>
         <div className="flex items-center gap-1">
           <img
-            src="/src/assets/images/logo.png"
-            alt="YouTube Logo"
+            src={logo}
+            alt="Rising Logo"
             className="w-24 h-5 object-contain"
           />
         </div>
