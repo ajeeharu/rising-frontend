@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import logo from '../../../assets/images/rising-logo.jpg';
+import logo from '../../assets/images/rising-logo.jpg';
 
 export const Header = () => {
   return (
@@ -14,7 +14,7 @@ export const Header = () => {
           <img
             src={logo}
             alt="Rising Logo"
-            className="w-24 h-5 object-contain"
+            className="w-32 h-8 object-contain"
           />
         </div>
       </div>
