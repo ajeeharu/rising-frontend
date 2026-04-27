@@ -36,9 +36,9 @@ export const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/login" element={<LoginForm />} />
         {/* 他の通常のページ */}
       </Route>
+      <Route path="/login" element={<LoginForm />} /> {/* ログインページはレイアウトなしで直接表示 */}
     </Routes>
   )
 };
