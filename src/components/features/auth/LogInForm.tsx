@@ -176,8 +176,20 @@ export const LoginForm: React.FC = () => {
           <>
             <form className="space-y-6" onSubmit={handleSignUp}>
               <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
-              <InputField label="パスワード" type="password" value={password} onChange={setPassword} />
-              <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
+              <div>
+                <InputField label="パスワード" type="password" value={password} onChange={setPassword} />
+
+                {/* パスワードポリシーの表示エリア */}
+                <div className="mt-2 p-3 bg-gray-100 rounded-md">
+                  <p className="text-xs font-semibold text-gray-700 mb-2">パスワードの要件:</p>
+                  <ul className="space-y-1">
+                    <PolicyItem label="8文字以上" isValid={password.length >= 8} />
+                    <PolicyItem label="大文字を含む" isValid={/[A-Z]/.test(password)} />
+                    <PolicyItem label="小文字を含む" isValid={/[a-z]/.test(password)} />
+                    <PolicyItem label="数字を含む" isValid={/\d/.test(password)} />
+                  </ul>
+                </div>
+              </div>              <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
             </form>
             <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
               ログインに戻る
@@ -254,4 +266,18 @@ const Divider = ({ label }: any) => (
     <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300"></div></div>
     <div className="relative flex justify-center text-sm"><span className="bg-gray-50 px-2 text-gray-500">{label}</span></div>
   </div>
+);
+
+// 1つのポリシー項目を表示するコンポーネント
+const PolicyItem = ({ label, isValid }: { label: string; isValid: boolean }) => (
+  <li className={`flex items-center gap-2 text-xs ${isValid ? 'text-green-600' : 'text-gray-500'}`}>
+    {isValid ? (
+      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+      </svg>
+    ) : (
+      <span className="w-3 h-3 rounded-full border border-gray-400" />
+    )}
+    {label}
+  </li>
 );
