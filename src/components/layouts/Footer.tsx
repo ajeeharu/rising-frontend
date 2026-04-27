@@ -60,7 +60,7 @@ export const Footer = () => {
         {/* コピーライトエリア */}
         <div className="mt-8 border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-base text-gray-400">
-            &copy; {currentYear} MyBrand Inc. All rights reserved.
+            &copy; {currentYear} Rising 卓球教室 All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <span className="text-gray-400 hover:text-gray-500 cursor-pointer text-sm"><Link to="/privacy">プライバシーポリシー</Link></span>
