@@ -2,7 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "../components/layouts/MainLayout";
 import { LoginForm } from "../components/features/auth/LogInForm";
-import { Home } from "../pages/Home";
+import { Maintenance } from "../pages/Maintenance";
 import { TermsOfService } from "../pages/TermsOfService";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 import { Amplify } from 'aws-amplify';
@@ -33,7 +33,7 @@ export const AppRoutes = () => {
     <Routes>
       {/* 「メインのレイアウト」を使うグループ */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Maintenance />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         {/* 他の通常のページ */}
