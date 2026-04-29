@@ -1,96 +1,150 @@
+import { Scale, Clock, UserCheck, ShieldAlert, Key, HelpCircle, FileText, Mail, MapPin, Building, User } from 'lucide-react';
 
 export const TermsOfService = () => {
     return (
+        <div className="min-h-screen bg-[#fcfcfd] py-20 px-4">
+            <div className="max-w-4xl mx-auto">
+                {/* ヘッダーエリア */}
+                <div className="text-center mb-16">
+                    <div className="inline-flex items-center justify-center p-3 bg-blue-50 text-blue-600 rounded-2xl mb-6">
+                        <Scale className="w-8 h-8" />
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+                        利用規約
+                    </h1>
+                    <div className="flex items-center justify-center gap-2 text-gray-400 font-medium">
+                        <Clock className="w-4 h-4" />
+                        <p>最終更新日: 2026年4月11日</p>
+                    </div>
+                </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-12 md:py-16">
-            <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">利用規約</h1>
-                <p className="text-gray-600">最終更新日: 2026年4月11日</p>
-            </header>
+                {/* メインコンテンツ */}
+                <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="p-8 md:p-16">
+                        <div className="prose prose-blue max-w-none text-gray-600 leading-relaxed">
+                            <p className="text-lg text-gray-800 leading-loose mb-12 border-l-4 border-blue-500 pl-6 py-2 bg-blue-50/30 rounded-r-lg">
+                                この利用規約（以下、「本規約」といいます。）は、Rising卓球教室（以下、「当教室」といいます。）が本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）の利用条件を定めるものです。ユーザーの皆さまには、本規約に従って本サービスをご利用いただきます。
+                            </p>
 
-            <div className="bg-white p-8 md:p-12 rounded-lg">
-                <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed">
-                    <p>この利用規約（以下、「本規約」といいます。）は、[サービス名]（以下、「Rising卓球教室」といいます。）が本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）の利用条件を定めるものです。登録ユーザーの皆さま（以下、「ユーザー」といいます。）には、本規約に従って、本サービスをご利用いただきます。</p>
+                            {/* 第1条・第2条 */}
+                            {[
+                                {
+                                    title: "第1条（適用）",
+                                    icon: <FileText className="w-5 h-5" />,
+                                    content: "本規約は、ユーザーと当教室との間の本サービスの利用に関わる一切の関係に適用されるものとします。"
+                                },
+                                {
+                                    title: "第2条（利用登録）",
+                                    icon: <UserCheck className="w-5 h-5" />,
+                                    content: "本サービスにおいては、登録希望者が本規約に同意の上、当教室の定める方法によって利用登録を申請し、当教室がこれを承認することによって、利用登録が完了するものとします。"
+                                },
+                                {
+                                    title: "第3条（ユーザーIDおよびパスワードの管理）",
+                                    icon: <Key className="w-5 h-5" />,
+                                    content: "ユーザーは、自己の責任において、本サービスのユーザーIDおよびパスワードを適切に管理するものとします。"
+                                },
+                            ].map((section, idx) => (
+                                <section key={idx} className="mb-12">
+                                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6">
+                                        <span className="text-blue-600/30 text-3xl italic">0{idx + 1}</span>
+                                        {section.title}
+                                    </h2>
+                                    <div className="flex gap-4 p-6 bg-gray-50/50 rounded-2xl border border-gray-100">
+                                        <div className="text-blue-500 mt-1">{section.icon}</div>
+                                        <p className="text-gray-700 m-0">{section.content}</p>
+                                    </div>
+                                </section>
+                            ))}
 
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第1条（適用）</h2>
-                    <p>本規約は、ユーザーとRising卓球教室との間の本サービスの利用に関わる一切の関係に適用されるものとします。</p>
-
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第2条（利用登録）</h2>
-                    <p>本サービスにおいては、登録希望者が本規約に同意の上、Rising卓球教室の定める方法によって利用登録を申請し、Rising卓球教室がこれを承認することによって、利用登録が完了するものとします。</p>
-
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第3条（ユーザーIDおよびパスワードの管理）</h2>
-                    <p>ユーザーは、自己の責任において、本サービスのユーザーIDおよびパスワードを適切に管理するものとします。</p>
-
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第4条（利用目的の変更）</h2>
-                    <p>ユーザーは、本サービスの利用にあたり、以下の行為をしてはなりません。</p>
-                    <ul className="list-disc pl-5 space-y-2">
-                        <li>Rising卓球教室は，利用目的が変更前と関連性を有すると合理的に認められる場合に限り，個人情報の利用目的を変更するものとします。</li>
-                        <li>利用目的の変更を行った場合には，変更後の目的について，Rising卓球教室所定の方法により，ユーザーに通知し，または本ウェブサイト上に公表するものとします。</li>
-                    </ul>
-
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第5条（個人情報の第三者提供）</h2>
-                    <ul className="list-disc pl-5 space-y-2">
-                        <li>Rising卓球教室は，次に掲げる場合を除いて，あらかじめユーザーの同意を得ることなく，第三者に個人情報を提供することはありません。ただし，個人情報保護法その他の法令で認められる場合を除きます。
-                            <ul className="list-disc pl-5 space-y-2">
-                                <li>人の生命，身体または財産の保護のために必要がある場合であって，本人の同意を得ることが困難であるとき</li>
-                                <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって，本人の同意を得ることが困難であるとき</li>
-                                <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合であって，本人の同意を得ることが困難であるとき</li>
-                                <li>予め次の事項を告知あるいは公表し，かつRising卓球教室が個人情報保護委員会に届出をしたとき
-                                    <ul className="list-disc pl-5 space-y-2">
-                                        <li>利用目的に第三者への提供を含むこと</li>
-                                        <li>第三者に提供されるデータの項目</li>
-                                        <li>第三者への提供の手段または方法</li>
-                                        <li>本人の求めに応じて個人情報の第三者への提供を停止すること</li>
-                                        <li>本人の求めを受け付ける方法</li>
+                            {/* 第4条（利用目的の変更） */}
+                            <section className="mb-12">
+                                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6">
+                                    <span className="text-blue-600/30 text-3xl italic">04</span>
+                                    第4条（利用目的の変更）
+                                </h2>
+                                <div className="bg-blue-50/30 p-6 rounded-2xl border border-blue-100">
+                                    <ul className="space-y-4 list-none p-0">
+                                        <li className="flex gap-3 text-sm font-medium text-gray-700">
+                                            <span className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-[10px]">1</span>
+                                            利用目的が変更前と関連性を有すると合理的に認められる場合に限り，個人情報の利用目的を変更するものとします。
+                                        </li>
+                                        <li className="flex gap-3 text-sm font-medium text-gray-700">
+                                            <span className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center flex-shrink-0 text-[10px]">2</span>
+                                            利用目的の変更を行った場合には，変更後の目的について，当教室所定の方法によりユーザーに通知，または本ウェブサイト上に公表するものとします。
+                                        </li>
                                     </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>前項の定めにかかわらず，次に掲げる場合には，Rising卓球教室はあらかじめユーザーの同意を得ることなく，個人情報を第三者に提供することができるものとします。
-                            <ul className="list-disc pl-5 space-y-2">
-                                <li>Rising卓球教室が利用目的の達成に必要な範囲内において個人情報の取扱いの全部または一部を委託する場合</li>
-                                <li>合併その他の事由による事業の承継に伴って個人情報が提供される場合</li>
-                                <li>個人情報を特定の者との間で共同して利用する場合であって，その共同して利用する者が利用目的の達成に必要な範囲内において個人情報の取扱いを行う場合</li>
-                                <li>個人情報を特定の者との間で共同して利用する場合であって，その旨並びに共同して利用される個人情報の項目，共同して利用する者の範囲，利用する者の利用目的および当該個人情報の管理について責任を有する者の氏名または名称について，あらかじめ本人に通知し，または本人が容易に知り得る状態に置いた場合</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第6条（個人情報の開示）</h2>
-                    <ul>
-                        <li>Rising卓球教室は，ユーザーから個人情報の開示を求められたときは，ユーザーに対し，遅滞なくこれを開示するものとします。ただし，開示することが次のいずれかに該当する場合には，その全部またはいずれか一部を開示しないこともあり，開示しない決定をした場合には，その旨を遅滞なくユーザーに通知するものとします。
-                            <ul className="list-disc pl-5 space-y-2">
-                                <li>ユーザー本人または第三者の生命，身体，財産その他の権利利益を害するおそれがある場合</li>
-                                <li>Rising卓球教室の業務の適正な実施に著しい支障を及ぼすおそれがある場合</li>
-                                <li>その他法令に違反することとなる場合</li>
-                            </ul>
-                        </li>
-                        <li>前項の定めにかかわらず，履歴情報および特性情報などの個人情報以外の情報については，原則として開示いたしません。</li>
-                    </ul>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第7条（個人情報の訂正および削除）</h2>
-                    <ul>
-                        <li>ユーザーは，Rising卓球教室の保有する自己の個人情報が誤った情報である場合には，Rising卓球教室が定める手続きにより，Rising卓球教室に対して個人情報の訂正，追加または削除（以下，「訂正等」といいます。）を請求することができます。</li>
-                        <li>Rising卓球教室は，ユーザーから前項の請求を受けたときは，遅滞なく必要な調査を行い，その結果に基づいて当該個人情報の訂正等を行うものとします。</li>
-                        <li>Rising卓球教室は，前項の定めにかかわらず，ユーザーの個人情報が誤った情報であるという理由だけでは，個人情報の訂正等を行わないこともあり，訂正等を行わない決定をした場合には，その旨を遅滞なくユーザーに通知するものとします。</li>
-                    </ul>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第8条（個人情報の利用停止等）</h2>
-                    <ul>
-                        <li>Rising卓球教室は，ユーザーから，個人情報が盗用されたものであるという理由によって，Rising卓球教室の保有する自己の個人情報の利用停止または消去（以下，「利用停止等」といいます。）を求められた場合には，遅滞なく必要な調査を行います。</li>
-                        <li>前項の調査の結果，その個人情報が盗用されたものであるとRising卓球教室が判断した場合には，Rising卓球教室は，遅滞なく当該個人情報の利用停止等を行い，その旨をユーザーに通知するものとします。</li>
-                        <li>Rising卓球教室は，前項の定めにかかわらず，ユーザーの個人情報が盗用されたものであるという理由だけでは，個人情報の利用停止等を行わないこともあり，利用停止等を行わない決定をした場合には，その旨を遅滞なくユーザーに通知するものとします。</li>
-                        <li>前2項にかかわらず，利用停止等に多額の費用を有する場合その他利用停止等を行うことが困難な場合であって，ユーザーの権利利益を保護するために必要なこれに代わるべき措置をとれる場合は，この代替策を講じるものとします。</li>
-                    </ul>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第9条（プライバシーポリシーの変更）</h2>
-                    <ul>
-                        <li>本ポリシーの内容は，法令その他本ポリシーに別段の定めのある事項を除いて，ユーザーに通知することなく，変更することができるものとします。</li>
-                        Rising卓球教室が別途定める場合を除いて，変更後のプライバシーポリシーは，本ウェブサイトに掲載したときから効力を生じるものとします。
-                    </ul>
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">第10条（お問い合わせ窓口）</h2>
+                                </div>
+                            </section>
+
+                            {/* 第5条（第三者提供） */}
+                            <section className="mb-12">
+                                <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6">
+                                    <span className="text-blue-600/30 text-3xl italic">05</span>
+                                    第5条（個人情報の第三者提供）
+                                </h2>
+                                <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
+                                    <p className="text-sm text-gray-500 mb-6 border-b pb-4 leading-relaxed">
+                                        当教室は、次に掲げる場合を除いて、あらかじめ同意を得ることなく第三者に個人情報を提供することはありません。
+                                    </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                                        {[
+                                            "人の生命，身体または財産の保護のために必要な場合",
+                                            "公衆衛生の向上または児童の健全な育成に必要な場合",
+                                            "国の機関や地方公共団体等の事務遂行に協力する場合",
+                                            "利用目的に第三者提供を含み、あらかじめ告知・届出をしたとき"
+                                        ].map((text, i) => (
+                                            <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                                                <div className="w-1 h-full bg-blue-400 rounded-full" />
+                                                <span className="text-gray-700">{text}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* 第6条〜第9条 */}
+                            {[
+                                { title: "第6条（個人情報の開示）", content: "本人から開示を求められたときは，遅滞なくこれを開示します。ただし，業務の適正な実施に支障を及ぼす場合等には，一部または全部を開示しないことがあります。" },
+                                { title: "第7条（個人情報の訂正および削除）", content: "ユーザーは、保有する自己の個人情報が誤った情報である場合には、所定の手続きにより訂正、追加または削除を請求することができます。" },
+                                { title: "第8条（個人情報の利用停止等）", content: "個人情報が盗用されたものであるという理由等により，その利用の停止または消去を求められた場合には，遅滞なく必要な調査を行い対応します。" },
+                                { title: "第9条（プライバシーポリシーの変更）", content: "本ポリシーの内容は，ユーザーに通知することなく変更することができるものとします。変更後のポリシーは，ウェブサイトに掲載したときから効力を生じるものとします。" },
+                            ].map((section, idx) => (
+                                <section key={idx + 6} className="mb-12">
+                                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3 mb-6">
+                                        <span className="text-blue-600/30 text-3xl italic">0{idx + 6}</span>
+                                        {section.title}
+                                    </h2>
+                                    <p className="text-gray-600 leading-relaxed pl-6 border-l-2 border-gray-100">{section.content}</p>
+                                </section>
+                            ))}
+
+                            {/* 第10条：お問い合わせ窓口 */}
+                            <section className="mt-20 pt-12 border-t border-gray-100">
+                                <div className="flex items-center gap-3 mb-8 text-blue-600">
+                                    <HelpCircle size={24} />
+                                    <h2 className="text-2xl font-bold text-gray-900">第10条（お問い合わせ窓口）</h2>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <ContactItem icon={<MapPin size={18} />} label="所在地" value="福井県福井市新田塚２丁目45-22" />
+                                    <ContactItem icon={<Building size={18} />} label="名称" value="Rising卓球教室" />
+                                    <ContactItem icon={<User size={18} />} label="代表" value="奥山 裕治" />
+                                    <ContactItem icon={<Mail size={18} />} label="Eメール" value="jichikaishien01@gmail.com" />
+                                </div>
+                            </section>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <footer className="text-center mt-12 text-gray-500 text-sm">
-                &copy; 2026 Rising　卓球教室 All rights reserved.
-            </footer>
         </div>
-    )
-}
+    );
+};
+
+const ContactItem = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) => (
+    <div className="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:bg-white hover:shadow-sm transition-all group">
+        <div className="text-blue-600 group-hover:scale-110 transition-transform">{icon}</div>
+        <div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">{label}</p>
+            <p className="text-sm font-bold text-gray-800">{value}</p>
+        </div>
+    </div>
+);
