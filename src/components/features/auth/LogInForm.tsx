@@ -32,7 +32,7 @@ export const LoginForm = () => {
   };
 
   // 1. ログイン処理
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -57,7 +57,7 @@ export const LoginForm = () => {
   };
 
   // 2. 新規登録処理
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     // パスワードポリシーのチェック
@@ -90,7 +90,7 @@ export const LoginForm = () => {
   };
 
   // 3. 確認コード送信処理
-  const handleConfirmSignUp = async (e: React.FormEvent) => {
+  const handleConfirmSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
