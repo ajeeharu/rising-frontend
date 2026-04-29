@@ -1,4 +1,4 @@
-import { ShieldCheck, Mail, Clock, MapPin, Building, User, Info, AlertCircle, FileText, Settings } from 'lucide-react';
+import { ShieldCheck, Mail, Clock, MapPin, Building, User, Info } from 'lucide-react';
 
 export const PrivacyPolicy = () => {
   return (

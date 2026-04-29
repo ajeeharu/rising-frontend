@@ -1,4 +1,4 @@
-import { Scale, Clock, UserCheck, ShieldAlert, Key, HelpCircle, FileText, Mail, MapPin, Building, User } from 'lucide-react';
+import { Scale, Clock, UserCheck, Key, HelpCircle, FileText, Mail, MapPin, Building, User } from 'lucide-react';
 
 export const TermsOfService = () => {
     return (
