@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { signIn, getCurrentUser, signUp, confirmSignUp } from 'aws-amplify/auth';
-import loginImage from "../../../assets/images/login.jpg";
+import loginImage from "../../../assets/images/login.png";
 import { signInWithRedirect } from 'aws-amplify/auth';
 
 // 画面表示の状態を管理する型
 type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp';
 
-export const LoginForm: React.FC = () => {
+export const LoginForm = () => {
   const [step, setStep] = useState<AuthStep>('signIn');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
