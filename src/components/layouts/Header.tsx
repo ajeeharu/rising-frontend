@@ -6,13 +6,13 @@ export const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // メニュー項目の共通スタイル
-  const menuLinkStyle = "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:bg-gray-100 text-[#2345A6] font-medium text-sm whitespace-nowrap";
-  const activeLinkStyle = "flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200 text-[#2345a6] font-bold text-sm whitespace-nowrap shadow-sm";
+  const menuLinkStyle = "flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 hover:bg-gray-100 text-info font-medium text-sm whitespace-nowrap";
+  const activeLinkStyle = "flex items-center gap-2 px-4 py-2 rounded-full bg-gray-200 text-info font-bold text-sm whitespace-nowrap shadow-sm";
 
   return (
     <>
       {/* ヘッダー本体 */}
-      <header className="fixed top-0 left-0 right-0 z-[1000] h-[100px] bg-[#fff767] shadow-lg flex items-center px-8">
+      <header className="fixed top-0 left-0 right-0 z-[1000] h-[100px] bg-base shadow-lg flex items-center px-8">
 
         {/* --- 左側：ロゴ＆アプリ名エリア --- 
             Google審査対策として、テキストで正式名称を併記
@@ -25,10 +25,10 @@ export const Header = () => {
               className="w-[80px] h-[80px] object-contain drop-shadow-md transition-transform group-hover:scale-105"
             />
             <div className="flex flex-row items-center">
-              <span className="text-[#2345A6] text-xl font-black leading-tight tracking-tighter">
+              <span className="text-info text-xl font-black leading-tight tracking-tighter">
                 Rising
               </span>
-              <span className="ml-2 text-[#fa630e] text-xl font-bold leading-none">
+              <span className="ml-2 text-accent text-xl font-bold leading-none">
                 卓球教室
               </span>
             </div>
@@ -89,7 +89,7 @@ export const Header = () => {
             ) : (
               <NavLink
                 to="/login"
-                className="ml-4 px-6 py-2 bg-[#fa630e] text-white rounded-full text-sm font-bold border-2 border-[#fa630e] hover:bg-white hover:text-[#fa630e] transition-all duration-300 shadow-sm"
+                className="ml-4 px-6 py-2 bg-accent text-white rounded-full text-sm font-bold border-2 border-accent hover:bg-white hover:text-accent transition-all duration-300 shadow-sm"
               >
                 ログイン
               </NavLink>

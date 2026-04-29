@@ -2,7 +2,12 @@
 
 @theme {
   --color-primary: #FF9B00;
-  --color-secondary:#FFE100;
-  --color-accent:#FFC900;
+  --color-secondary:#4d69ba;
+  --color-accent:#fa630e;
   --color-neutral:#EBE389;
+  --color-info:#2345A6;
+  --color-base:#fff767;
+  --color-success:#4CAF50;
+  --color-warning:#FFC107;
+  --color-error:#F44336;
 }

@@ -5,6 +5,7 @@ import { LoginForm } from "../components/features/auth/LogInForm";
 import { Maintenance } from "../pages/Maintenance";
 import { TermsOfService } from "../pages/TermsOfService";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
+import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
 
 Amplify.configure({
@@ -36,6 +37,7 @@ export const AppRoutes = () => {
         <Route path="/" element={<Maintenance />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/about" element={<AboutUs />} />
         {/* 他の通常のページ */}
       </Route>
       <Route path="/login" element={<LoginForm />} /> {/* ログインページはレイアウトなしで直接表示 */}
