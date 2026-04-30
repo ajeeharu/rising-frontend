@@ -120,7 +120,7 @@ export const PrivacyPolicy = () => {
                   <ContactItem icon={<MapPin size={18}/>} label="住所" value="福井県福井市新田塚２丁目45-22" />
                   <ContactItem icon={<Building size={18}/>} label="社名" value="Rising卓球教室" />
                   <ContactItem icon={<User size={18}/>} label="代表" value="奥山 裕治" />
-                  <ContactItem icon={<Mail size={18}/>} label="Eメール" value="jichikaishien01@gmail.com" />
+                  <ContactItem icon={<Mail size={18}/>} label="Eメール" value="otoiawase@rising-table-tennis.website" />
                 </div>
               </section>
             </div>

@@ -96,9 +96,9 @@ export const AboutUs = () => {
 
         {/* お問い合わせ（先ほどのデザインを維持） */}
         <div className="mt-8">
-          <a href="mailto:jichikaishien01@gmail.com" className="flex items-center gap-4 bg-secondary text-white p-6 rounded-2xl hover:bg-blue-600 transition-all group">
+          <a href="mailto:otoiawase@rising-table-tennis.website" className="flex items-center gap-4 bg-secondary text-white p-6 rounded-2xl hover:bg-blue-600 transition-all group">
             <Mail className="w-5 h-5 text-blue-400" />
-            <span className="font-bold">jichikaishien01@gmail.com</span>
+            <span className="font-bold">otoiawase@rising-table-tennis.website</span>
           </a>
         </div>
       </div>
