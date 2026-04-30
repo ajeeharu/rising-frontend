@@ -1,21 +1,24 @@
 import { useState } from 'react';
-import { signIn, getCurrentUser, signUp, confirmSignUp } from 'aws-amplify/auth';
+import {
+  signIn, getCurrentUser, signUp, confirmSignUp, resetPassword,
+  confirmResetPassword
+} from 'aws-amplify/auth';
 import loginImage from "../../../assets/images/login.jpg";
-// import { signInWithRedirect } from 'aws-amplify/auth';
-import { useNavigate } from 'react-router-dom'; // 追加
+import { useNavigate } from 'react-router-dom';
 
 // 画面表示の状態を管理する型
-type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp';
+type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp' | 'forgotPassword' | 'resetPasswordSubmit';
 
 export const LoginForm = () => {
   const [step, setStep] = useState<AuthStep>('signIn');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState(''); // パスワードリセット用
   const [confirmationCode, setConfirmationCode] = useState(''); // 確認コード用
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const navigate = useNavigate(); // ← これを追加！
+  const navigate = useNavigate();
 
   // エラーハンドリングの共通関数
   const handleAuthError = (err: any) => {
@@ -30,6 +33,41 @@ export const LoginForm = () => {
       setError('確認コードが正しくありません。');
     } else {
       setError('エラーが発生しました。時間をおいて再度お試しください。');
+    }
+  };
+
+  // --- パスワードリセット処理 1: メール送信 ---
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+    try {
+      await resetPassword({ username: email });
+      setStep('resetPasswordSubmit'); // コード入力画面へ
+    } catch (err: any) {
+      handleAuthError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --- パスワードリセット処理 2: 新パスワード設定 ---
+  const handleResetPasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+    try {
+      await confirmResetPassword({
+        username: email,
+        confirmationCode,
+        newPassword
+      });
+      alert('パスワードを再設定しました。新しいパスワードでログインしてください。');
+      setStep('signIn');
+    } catch (err: any) {
+      handleAuthError(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -121,11 +159,31 @@ export const LoginForm = () => {
   // };
 
   // --- 共通UIパーツ：エラー表示 ---
-  const ErrorAlert = () => error ? (
-    <div className="rounded-md bg-red-50 p-4 ring-1 ring-inset ring-red-200 mb-6">
-      <p className="text-sm font-medium text-red-800">{error}</p>
-    </div>
-  ) : null;
+  // propsの型定義
+  type ErrorAlertProps = {
+    error: string;
+  };
+
+  const ErrorAlert = ({ error }: ErrorAlertProps) => {
+    // エラーメッセージが空（""）の場合は何も表示しない
+    if (!error) return null;
+
+    return (
+      <div className="rounded-md bg-red-50 p-4 ring-1 ring-inset ring-red-200 mb-6 animate-in fade-in duration-300">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            {/* 警告アイコン */}
+            <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <p className="text-sm font-medium text-red-800">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // --- ログイン済みの表示 ---
   if (user) {
@@ -165,14 +223,22 @@ export const LoginForm = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <ErrorAlert />
+        {/* error ステートを渡す */}
+        <ErrorAlert error={error} />
 
         {/* --- 1. ログインフォーム --- */}
         {step === 'signIn' && (
           <>
             <form className="space-y-6" onSubmit={handleSignIn}>
               <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
-              <InputField label="パスワード" type="password" value={password} onChange={setPassword} showForgot />
+              <InputField
+                label="パスワード"
+                type="password"
+                value={password}
+                onChange={setPassword}
+                showForgot
+                onForgotClick={() => setStep('forgotPassword')} // ステップ切替を追加
+              />
               <SubmitButton isLoading={isLoading} label="サインイン" />
             </form>
             {/* <Divider label="または" />
@@ -185,7 +251,30 @@ export const LoginForm = () => {
             </p>
           </>
         )}
+        {/* --- 4. パスワード忘れメール送信フォーム --- */}
+        {step === 'forgotPassword' && (
+          <>
+            <form className="space-y-6" onSubmit={handleForgotPassword}>
+              <p className="text-sm text-gray-600">登録済みのメールアドレスを入力してください。再設定用のコードを送信します。</p>
+              <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
+              <SubmitButton isLoading={isLoading} label="リセットコードを送信" />
+            </form>
+            <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
+              キャンセルして戻る
+            </button>
+          </>
+        )}
 
+        {/* --- 5. 新パスワード入力フォーム --- */}
+        {step === 'resetPasswordSubmit' && (
+          <>
+            <form className="space-y-6" onSubmit={handleResetPasswordSubmit}>
+              <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
+              <InputField label="新しいパスワード" type="password" value={newPassword} onChange={setNewPassword} />
+              <SubmitButton isLoading={isLoading} label="パスワードを更新" />
+            </form>
+          </>
+        )}
         {/* --- 2. 新規登録フォーム --- */}
         {step === 'signUp' && (
           <>
@@ -227,13 +316,20 @@ export const LoginForm = () => {
 
 // --- サブコンポーネント ---
 
-const InputField = ({ label, type, value, onChange, placeholder, showForgot }: any) => (
+const InputField = ({ label, type, value, onChange, placeholder, showForgot, onForgotClick }: any) => (
   <div>
     <div className="flex items-center justify-between">
       <label className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
       {showForgot && (
         <div className="text-sm">
-          <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">パスワードを忘れましたか？</a>
+          {/* aタグをbuttonに変更してイベントを紐付け */}
+          <button
+            type="button"
+            onClick={onForgotClick}
+            className="font-semibold text-indigo-600 hover:text-indigo-500"
+          >
+            パスワードを忘れましたか？
+          </button>
         </div>
       )}
     </div>
@@ -296,3 +392,4 @@ const PolicyItem = ({ label, isValid }: { label: string; isValid: boolean }) => 
     {label}
   </li>
 );
+
