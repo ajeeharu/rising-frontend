@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signIn, getCurrentUser, signUp, confirmSignUp } from 'aws-amplify/auth';
-import loginImage from "../../../assets/images/login.png";
+import loginImage from "../../../assets/images/login.jpg";
 import { signInWithRedirect } from 'aws-amplify/auth';
 
 // 画面表示の状態を管理する型
@@ -160,8 +160,8 @@ export const LoginForm = () => {
               <InputField label="パスワード" type="password" value={password} onChange={setPassword} showForgot />
               <SubmitButton isLoading={isLoading} label="サインイン" />
             </form>
-            <Divider label="または" />
-            <GoogleButton onClick={handleGoogleSignIn} />
+            {/* <Divider label="または" />
+            <GoogleButton onClick={handleGoogleSignIn} /> */}
             <p className="mt-10 text-center text-sm text-gray-500">
               メンバーではありませんか？{' '}
               <button onClick={() => setStep('signUp')} className="font-semibold text-indigo-600 hover:text-indigo-500">
