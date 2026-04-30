@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { signIn, getCurrentUser, signUp, confirmSignUp } from 'aws-amplify/auth';
 import loginImage from "../../../assets/images/login.jpg";
-import { signInWithRedirect } from 'aws-amplify/auth';
-import { useNavigate, Link } from 'react-router-dom'; // 追加
+// import { signInWithRedirect } from 'aws-amplify/auth';
+import { useNavigate } from 'react-router-dom'; // 追加
 
 // 画面表示の状態を管理する型
 type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp';
