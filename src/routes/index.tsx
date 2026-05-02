@@ -1,12 +1,17 @@
 // src/routes/index.tsx
+import { Authenticator } from '@aws-amplify/ui-react';
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "../components/layouts/MainLayout";
 import { LoginForm } from "../components/features/auth/LogInForm";
 import { Maintenance } from "../pages/Maintenance";
 import { TermsOfService } from "../pages/TermsOfService";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
+import { EditProfile } from "../pages/EditProfile";
 import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
+import { lazy } from "react";
+// ProtectedRouteは遅延ロードすることで、初期ロードのパフォーマンスを向上させる
+const ProtectedRoute = lazy(() => import("../components/features/auth/ProtectedRoute"));
 
 Amplify.configure({
   Auth: {
@@ -29,18 +34,29 @@ Amplify.configure({
   }
 });
 
+
 export const AppRoutes = () => {
   return (
-    <Routes>
-      {/* 「メインのレイアウト」を使うグループ */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Maintenance />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/about" element={<AboutUs />} />
-        {/* 他の通常のページ */}
-      </Route>
-      <Route path="/login" element={<LoginForm />} /> {/* ログインページはレイアウトなしで直接表示 */}
-    </Routes>
+    // 1. ここが最重要！Authenticator.Provider で全体を囲む
+    <Authenticator.Provider>
+      <Routes>
+        <Route path="/login" element={<LoginForm />} /> {/* ログインページはレイアウトなしで直接表示 */}
+        {/* Login無しで見れるページ */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Maintenance />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/about" element={<AboutUs />} />
+          {/* 他の通常のページ */}
+        </Route>
+        {/* ログインが必要なページ */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route element={<MainLayout />}>
+            {/* ログイン後にアクセスできるページ */}
+          </Route>
+        </Route>
+      </Routes>
+    </Authenticator.Provider>
   )
 };

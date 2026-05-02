@@ -6,6 +6,7 @@ import {
 import loginImage from "../../../assets/images/login.jpg";
 import { useNavigate } from 'react-router-dom';
 
+
 // 画面表示の状態を管理する型
 type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp' | 'forgotPassword' | 'resetPasswordSubmit';
 
@@ -392,4 +393,5 @@ const PolicyItem = ({ label, isValid }: { label: string; isValid: boolean }) => 
     {label}
   </li>
 );
+
 
