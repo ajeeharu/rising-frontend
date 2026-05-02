@@ -16,4 +16,8 @@ export default defineConfig({
       usePolling: true, // WSL2環境でのホットリロード安定化
     },
   },
+  build: {
+    // 警告が出るしきい値を 1000kB (1MB) に引き上げる
+    chunkSizeWarningLimit: 1000, 
+  },
 })
