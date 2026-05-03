@@ -200,118 +200,122 @@ export const LoginForm = () => {
 
   // --- メイン表示 ---
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50">
+    <main className="min-h-screen bg-[#f8fafc] py-10 px-4">
+      <div className="max-w-[800px] mx-auto">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50">
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img className="mx-auto h-64 w-auto object-cover rounded-xl" src={loginImage} alt="Auth" />
-        {/* 1. 左上の戻るボタン (全画面共通) */}
-        <div className="mt-8">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            ホームに戻る
-          </button>
-        </div>
-        <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
-          {step === 'signIn' && 'サインイン'}
-          {step === 'signUp' && 'アカウント作成'}
-          {step === 'confirmSignUp' && 'メールアドレスの確認'}
-        </h2>
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        {/* error ステートを渡す */}
-        <ErrorAlert error={error} />
-
-        {/* --- 1. ログインフォーム --- */}
-        {step === 'signIn' && (
-          <>
-            <form className="space-y-6" onSubmit={handleSignIn}>
-              <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
-              <InputField
-                label="パスワード"
-                type="password"
-                value={password}
-                onChange={setPassword}
-                showForgot
-                onForgotClick={() => setStep('forgotPassword')} // ステップ切替を追加
-              />
-              <SubmitButton isLoading={isLoading} label="サインイン" />
-            </form>
-            {/* <Divider label="または" />
-            <GoogleButton onClick={handleGoogleSignIn} /> */}
-            <p className="mt-10 text-center text-sm text-gray-500">
-              メンバーではありませんか？{' '}
-              <button onClick={() => setStep('signUp')} className="font-semibold text-indigo-600 hover:text-indigo-500">
-                いますぐ登録（無料）
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <img className="mx-auto h-64 w-auto object-cover rounded-xl" src={loginImage} alt="Auth" />
+            {/* 1. 左上の戻るボタン (全画面共通) */}
+            <div className="my-8">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                ホームに戻る
               </button>
-            </p>
-          </>
-        )}
-        {/* --- 4. パスワード忘れメール送信フォーム --- */}
-        {step === 'forgotPassword' && (
-          <>
-            <form className="space-y-6" onSubmit={handleForgotPassword}>
-              <p className="text-sm text-gray-600">登録済みのメールアドレスを入力してください。再設定用のコードを送信します。</p>
-              <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
-              <SubmitButton isLoading={isLoading} label="リセットコードを送信" />
-            </form>
-            <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
-              キャンセルして戻る
-            </button>
-          </>
-        )}
+            </div>
+            <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">
+              {step === 'signIn' && 'ログイン'}
+              {step === 'signUp' && 'アカウント作成'}
+              {step === 'confirmSignUp' && 'メールアドレスの確認'}
+            </h2>
+          </div>
 
-        {/* --- 5. 新パスワード入力フォーム --- */}
-        {step === 'resetPasswordSubmit' && (
-          <>
-            <form className="space-y-6" onSubmit={handleResetPasswordSubmit}>
-              <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
-              <InputField label="新しいパスワード" type="password" value={newPassword} onChange={setNewPassword} />
-              <SubmitButton isLoading={isLoading} label="パスワードを更新" />
-            </form>
-          </>
-        )}
-        {/* --- 2. 新規登録フォーム --- */}
-        {step === 'signUp' && (
-          <>
-            <form className="space-y-6" onSubmit={handleSignUp}>
-              <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
-              <div>
-                <InputField label="パスワード" type="password" value={password} onChange={setPassword} />
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            {/* error ステートを渡す */}
+            <ErrorAlert error={error} />
 
-                {/* パスワードポリシーの表示エリア */}
-                <div className="mt-2 p-3 bg-gray-100 rounded-md">
-                  <p className="text-xs font-semibold text-gray-700 mb-2">パスワードの要件:</p>
-                  <ul className="space-y-1">
-                    <PolicyItem label="8文字以上" isValid={password.length >= 8} />
-                    <PolicyItem label="大文字を含む" isValid={/[A-Z]/.test(password)} />
-                    <PolicyItem label="小文字を含む" isValid={/[a-z]/.test(password)} />
-                    <PolicyItem label="数字を含む" isValid={/\d/.test(password)} />
-                  </ul>
-                </div>
-              </div>              <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
-            </form>
-            <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
-              ログインに戻る
-            </button>
-          </>
-        )}
+            {/* --- 1. ログインフォーム --- */}
+            {step === 'signIn' && (
+              <>
+                <form className="space-y-6" onSubmit={handleSignIn}>
+                  <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
+                  <InputField
+                    label="パスワード"
+                    type="password"
+                    value={password}
+                    onChange={setPassword}
+                    showForgot
+                    onForgotClick={() => setStep('forgotPassword')} // ステップ切替を追加
+                  />
+                  <SubmitButton isLoading={isLoading} label="ログイン" />
+                </form>
+                {/* <Divider label="または" />
+            <GoogleButton onClick={handleGoogleSignIn} /> */}
+                <p className="mt-10 text-center text-sm text-gray-500">
+                  メンバーではありませんか？{' '}
+                  <button onClick={() => setStep('signUp')} className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    いますぐ登録
+                  </button>
+                </p>
+              </>
+            )}
+            {/* --- 4. パスワード忘れメール送信フォーム --- */}
+            {step === 'forgotPassword' && (
+              <>
+                <form className="space-y-6" onSubmit={handleForgotPassword}>
+                  <p className="text-sm text-gray-600">登録済みのメールアドレスを入力してください。再設定用のコードを送信します。</p>
+                  <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
+                  <SubmitButton isLoading={isLoading} label="リセットコードを送信" />
+                </form>
+                <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
+                  キャンセルして戻る
+                </button>
+              </>
+            )}
 
-        {/* --- 3. 確認コード入力フォーム --- */}
-        {step === 'confirmSignUp' && (
-          <form className="space-y-6" onSubmit={handleConfirmSignUp}>
-            <p className="text-sm text-gray-600 mb-4">{email} に送信された確認コードを入力してください。</p>
-            <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
-            <SubmitButton isLoading={isLoading} label="認証する" />
-          </form>
-        )}
+            {/* --- 5. 新パスワード入力フォーム --- */}
+            {step === 'resetPasswordSubmit' && (
+              <>
+                <form className="space-y-6" onSubmit={handleResetPasswordSubmit}>
+                  <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
+                  <InputField label="新しいパスワード" type="password" value={newPassword} onChange={setNewPassword} />
+                  <SubmitButton isLoading={isLoading} label="パスワードを更新" />
+                </form>
+              </>
+            )}
+            {/* --- 2. 新規登録フォーム --- */}
+            {step === 'signUp' && (
+              <>
+                <form className="space-y-6" onSubmit={handleSignUp}>
+                  <InputField label="メールアドレス" type="email" value={email} onChange={setEmail} />
+                  <div>
+                    <InputField label="パスワード" type="password" value={password} onChange={setPassword} />
+
+                    {/* パスワードポリシーの表示エリア */}
+                    <div className="mt-2 p-3 bg-gray-100 rounded-md">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">パスワードの要件:</p>
+                      <ul className="space-y-1">
+                        <PolicyItem label="8文字以上" isValid={password.length >= 8} />
+                        <PolicyItem label="大文字を含む" isValid={/[A-Z]/.test(password)} />
+                        <PolicyItem label="小文字を含む" isValid={/[a-z]/.test(password)} />
+                        <PolicyItem label="数字を含む" isValid={/\d/.test(password)} />
+                      </ul>
+                    </div>
+                  </div>              <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
+                </form>
+                <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
+                  ログインに戻る
+                </button>
+              </>
+            )}
+
+            {/* --- 3. 確認コード入力フォーム --- */}
+            {step === 'confirmSignUp' && (
+              <form className="space-y-6" onSubmit={handleConfirmSignUp}>
+                <p className="text-sm text-gray-600 mb-4">{email} に送信された確認コードを入力してください。</p>
+                <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
+                <SubmitButton isLoading={isLoading} label="認証する" />
+              </form>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </main >
   );
 };
 
@@ -369,7 +373,7 @@ const SubmitButton = ({ isLoading, label }: any) => (
 //       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
 //       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
 //     </svg>
-//     Googleでサインイン
+//     Googleでログイン
 //   </button>
 // );
 
