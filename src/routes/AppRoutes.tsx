@@ -7,6 +7,9 @@ import { Maintenance } from "../pages/Maintenance";
 import { TermsOfService } from "../pages/TermsOfService";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 import { EditProfile } from "../pages/EditProfile";
+import { CreateVideo } from "../pages/CreateVideo";
+import { MyVideos } from "../pages/MyVideos";
+import { VideoDetail } from "../pages/VideoDetail";
 import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
 import { lazy } from "react";
@@ -51,9 +54,12 @@ export const AppRoutes = () => {
         </Route>
         {/* ログインが必要なページ */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/edit-profile" element={<EditProfile />} />
           <Route element={<MainLayout />}>
             {/* ログイン後にアクセスできるページ */}
+            <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path='/create-video' element={<CreateVideo />} />
+            <Route path='/my-videos' element={<MyVideos />} />
+            <Route path='/videos/:id' element={<VideoDetail />} />
           </Route>
         </Route>
       </Routes>

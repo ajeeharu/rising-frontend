@@ -49,7 +49,7 @@ export const Header = () => {
               <span>ホーム</span>
             </NavLink>
 
-            <NavLink to="/upload" className={({ isActive }) => isActive ? activeLinkStyle : menuLinkStyle}>
+            <NavLink to="/create-video" className={({ isActive }) => isActive ? activeLinkStyle : menuLinkStyle}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4z" /></svg>
               <span>動画をアップロード</span>
             </NavLink>
@@ -108,7 +108,7 @@ export const Header = () => {
             <NavLink to="/" onClick={toggleMenu} className={({ isActive }) => isActive ? mobileActiveStyle : mobileLinkStyle}>
               ホーム
             </NavLink>
-            <NavLink to="/upload" onClick={toggleMenu} className={({ isActive }) => isActive ? mobileActiveStyle : mobileLinkStyle}>
+            <NavLink to="/create-video" onClick={toggleMenu} className={({ isActive }) => isActive ? mobileActiveStyle : mobileLinkStyle}>
               動画をアップロード
             </NavLink>
             <NavLink to="/my-videos" onClick={toggleMenu} className={({ isActive }) => isActive ? mobileActiveStyle : mobileLinkStyle}>
