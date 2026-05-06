@@ -12,9 +12,7 @@ import { MyVideos } from "../pages/MyVideos";
 import { VideoDetail } from "../pages/VideoDetail";
 import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
-import { lazy } from "react";
-// ProtectedRouteは遅延ロードすることで、初期ロードのパフォーマンスを向上させる
-const ProtectedRoute = lazy(() => import("../context/ProtectedRoute"));
+import { ProtectedRoute } from './ProtectedRoute';
 
 Amplify.configure({
   Auth: {
@@ -50,13 +48,13 @@ export const AppRoutes = () => {
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
           {/* 他の通常のページ */}
         </Route>
         {/* ログインが必要なページ */}
-        <Route element={<ProtectedRoute />}>
+        <Route element={< ProtectedRoute />}>
           <Route element={<MainLayout />}>
             {/* ログイン後にアクセスできるページ */}
-            <Route path="/edit-profile" element={<EditProfile />} />
             <Route path='/create-video' element={<CreateVideo />} />
             <Route path='/my-videos' element={<MyVideos />} />
             <Route path='/videos/:id' element={<VideoDetail />} />
