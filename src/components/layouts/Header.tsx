@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/images/RisingLogo.png';
+import { useAuth } from '../../context/AuthContext';
 
 export const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLogIn, setIsLogIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false); // メニューの開閉状態
 
   // メニューを閉じる関数
@@ -64,8 +65,8 @@ export const Header = () => {
               <span>プロフィール編集</span>
             </NavLink>
 
-            {isLoggedIn ? (
-              <button onClick={() => setIsLoggedIn(false)} className="ml-4 px-5 py-2 bg-gray-800 text-white rounded-full text-sm font-bold hover:bg-black transition-colors shadow-sm">
+            {isLogIn ? (
+              <button onClick={() => setIsLogIn(false)} className="ml-4 px-5 py-2 bg-gray-800 text-white rounded-full text-sm font-bold hover:bg-black transition-colors shadow-sm">
                 ログオフ
               </button>
             ) : (
@@ -101,7 +102,7 @@ export const Header = () => {
       <div className={`fixed inset-0 z-[999] lg:hidden transition-opacity duration-300 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         {/* 背景の暗幕 */}
         <div className="absolute inset-0 bg-black/50" onClick={toggleMenu}></div>
-        
+
         {/* メニューコンテンツ */}
         <nav className={`absolute right-0 top-0 h-full w-[280px] bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"} pt-24 px-4`}>
           <div className="flex flex-col">
@@ -119,9 +120,9 @@ export const Header = () => {
             </NavLink>
 
             <div className="mt-8 px-4">
-              {isLoggedIn ? (
+              {isLogIn ? (
                 <button
-                  onClick={() => { setIsLoggedIn(false); toggleMenu(); }}
+                  onClick={() => { setIsLogIn(false); toggleMenu(); }}
                   className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold"
                 >
                   ログオフ

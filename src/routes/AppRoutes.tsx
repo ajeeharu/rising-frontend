@@ -2,7 +2,7 @@
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Routes, Route } from "react-router-dom";
 import { MainLayout } from "../components/layouts/MainLayout";
-import { LoginForm } from "../components/features/auth/LogInForm";
+import { LoginForm } from "../components/features/auth/LoginForm";
 import { Maintenance } from "../pages/Maintenance";
 import { TermsOfService } from "../pages/TermsOfService";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
@@ -14,7 +14,7 @@ import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
 import { lazy } from "react";
 // ProtectedRouteは遅延ロードすることで、初期ロードのパフォーマンスを向上させる
-const ProtectedRoute = lazy(() => import("../components/features/auth/ProtectedRoute"));
+const ProtectedRoute = lazy(() => import("../context/ProtectedRoute"));
 
 Amplify.configure({
   Auth: {
