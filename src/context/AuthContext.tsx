@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{
-            id, email, isLogIn, name, avatarUrl, SelfIntroduction, isProfileComplete, isLoading, refreshUser
+            userId: id, email, isLogIn, name, avatarUrl, SelfIntroduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete
         }}>
             {!isLoading && children} {/* チェックが終わるまで子要素を表示しない等の制御が可能 */}
         </AuthContext.Provider>

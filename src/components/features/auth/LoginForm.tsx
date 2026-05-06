@@ -19,7 +19,7 @@ export const LoginForm = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUserId, setEmail, setIsLogIn } = useAuth(); // 追加
+  const { email, setUserId, setEmail, setIsLogIn } = useAuth(); // 追加
 
 
   // エラーハンドリングの共通関数
@@ -90,7 +90,6 @@ export const LoginForm = () => {
       if (isSignedIn) {
         const currentUser = await getCurrentUser();
         setUserId(currentUser.userId);
-        setEmail(currentUser.username);
         setIsLogIn(true);
         // --- 追加: ホーム画面へリダイレクト ---
         navigate('/');
