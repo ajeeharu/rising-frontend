@@ -4,7 +4,7 @@ import logo from '../../assets/images/RisingLogo.png';
 import { useAuth } from '../../context/AuthContext';
 
 export const Header = () => {
-  const { isLogIn, setIsLogIn } = useAuth();
+  const { isLogIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false); // メニューの開閉状態
 
   // メニューを閉じる関数
@@ -66,9 +66,9 @@ export const Header = () => {
             </NavLink>
 
             {isLogIn ? (
-              <button onClick={() => setIsLogIn(false)} className="ml-4 px-5 py-2 bg-gray-800 text-white rounded-full text-sm font-bold hover:bg-black transition-colors shadow-sm">
+              <NavLink to="/logoff" className="ml-4 px-5 py-2 bg-gray-800 text-white rounded-full text-sm font-bold hover:bg-black transition-colors shadow-sm">
                 ログオフ
-              </button>
+              </NavLink>
             ) : (
               <NavLink to="/login" className="ml-4 px-6 py-2 bg-accent text-white rounded-full text-sm font-bold border-2 border-accent hover:bg-white hover:text-accent transition-all duration-300 shadow-sm">
                 ログイン
@@ -121,17 +121,18 @@ export const Header = () => {
 
             <div className="mt-8 px-4">
               {isLogIn ? (
-                <button
-                  onClick={() => { setIsLogIn(false); toggleMenu(); }}
-                  className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold"
+                <NavLink
+                  to="/logoff"
+                  onClick={toggleMenu}
+                  className="w-full py-3 px-4 bg-gray-800 text-white rounded-xl font-bold"
                 >
                   ログオフ
-                </button>
+                </NavLink>
               ) : (
                 <NavLink
                   to="/login"
                   onClick={toggleMenu}
-                  className="block w-full py-3 bg-accent text-white text-center rounded-xl font-bold"
+                  className="block w-full py-3 px-4bg-accent text-white text-center rounded-xl font-bold"
                 >
                   ログイン
                 </NavLink>

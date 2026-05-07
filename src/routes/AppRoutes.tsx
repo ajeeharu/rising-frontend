@@ -13,6 +13,7 @@ import { VideoDetail } from "../pages/VideoDetail";
 import { AboutUs } from "../pages/AboutUs";
 import { Amplify } from 'aws-amplify';
 import { ProtectedRoute } from './ProtectedRoute';
+import { Logoff } from '../components/features/auth/Logoff';
 
 Amplify.configure({
   Auth: {
@@ -42,6 +43,7 @@ export const AppRoutes = () => {
     <Authenticator.Provider>
       <Routes>
         <Route path="/login" element={<LoginForm />} /> {/* ログインページはレイアウトなしで直接表示 */}
+        <Route path="/logoff" element={<Logoff />} /> {/* ログアウトページはレイアウトなしで直接表示 */}
         {/* Login無しで見れるページ */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Maintenance />} />

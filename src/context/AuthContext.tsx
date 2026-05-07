@@ -8,6 +8,7 @@ interface AuthContextType extends User {
     isProfileComplete: boolean;
     isLoading: boolean; // ローディング状態を追加
     refreshUser: () => Promise<void>;
+    handleLogoutState: () => void; // ログアウト状態にする共通処理
     // setter類は省略（必要に応じて追加してください）
     setUserId: (id: string) => void;
     setEmail: (email: string) => void;
@@ -80,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{
-            userId: id, email, isLogIn, name, avatarUrl, SelfIntroduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete
+            userId: id, email, isLogIn, name, avatarUrl, SelfIntroduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete, handleLogoutState
         }}>
             {!isLoading && children} {/* チェックが終わるまで子要素を表示しない等の制御が可能 */}
         </AuthContext.Provider>
