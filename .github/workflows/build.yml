@@ -15,6 +15,9 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
+      - name: Restart SSH service
+        run: |
+          sudo systemctl restart ssh
       - name: Checkout code
         # v4 のままでも env 設定により Node 24 上で動作しますが、
         # 今後 v5 等が出た際はそちらへ更新を検討してください

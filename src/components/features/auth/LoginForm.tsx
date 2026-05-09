@@ -118,13 +118,19 @@ export const LoginForm = () => {
     }
     setIsLoading(true);
     try {
-      await signUp({
+      const { userId } = await signUp({
         username: email,
         password,
         options: {
           userAttributes: { email }
         }
       });
+      // userId の存在チェックを入れることで型エラーを回避
+      if (userId) {
+        setUserId(userId);
+        setEmail(email);
+        setIsLogIn(true);
+      }
       // 登録成功したら確認コード入力画面へ
       setStep('confirmSignUp');
     } catch (err: any) {
@@ -277,7 +283,19 @@ export const LoginForm = () => {
               <>
                 <form className="space-y-6" onSubmit={handleResetPasswordSubmit}>
                   <InputField label="確認コード" type="text" value={confirmationCode} onChange={setConfirmationCode} placeholder="123456" />
-                  <InputField label="新しいパスワード" type="password" value={newPassword} onChange={setNewPassword} />
+                  <div>
+                    <InputField label="新しいパスワード" type="password" value={newPassword} onChange={setNewPassword} />
+                    {/* パスワードポリシーの表示エリア */}
+                    <div className="mt-2 p-3 bg-gray-100 rounded-md">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">パスワードの要件:</p>
+                      <ul className="space-y-1">
+                        <PolicyItem label="8文字以上" isValid={newPassword.length >= 8} />
+                        <PolicyItem label="大文字を含む" isValid={/[A-Z]/.test(newPassword)} />
+                        <PolicyItem label="小文字を含む" isValid={/[a-z]/.test(newPassword)} />
+                        <PolicyItem label="数字を含む" isValid={/\d/.test(newPassword)} />
+                      </ul>
+                    </div>
+                  </div>
                   <SubmitButton isLoading={isLoading} label="パスワードを更新" />
                 </form>
               </>
@@ -300,7 +318,8 @@ export const LoginForm = () => {
                         <PolicyItem label="数字を含む" isValid={/\d/.test(password)} />
                       </ul>
                     </div>
-                  </div>              <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
+                  </div>
+                  <SubmitButton isLoading={isLoading} label="アカウントを作成する" />
                 </form>
                 <button onClick={() => setStep('signIn')} className="mt-4 w-full text-center text-sm font-semibold text-gray-600">
                   ログインに戻る
