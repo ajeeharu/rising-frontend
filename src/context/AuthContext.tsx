@@ -34,14 +34,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const refreshUser = async () => {
         handleLogoutState(); // まずはステートをリセットしてから処理を開始
         setIsLoading(true);
+        // --- 1. Cognitoのチェック (認証) ---
         try {
-            // 1. CognitoからID取得
             const currentUser = await getCurrentUser();
             setUserId(currentUser.userId);
             setIsLogIn(true);
+        } catch (authErr) {
+            // 未ログイン状態ならここで終了（正常な未ログインとして扱う）
+            console.log("未ログイン状態です");
+            setIsLoading(false);
+            return;
+        }
+        // 2. バックエンドからデータ取得
+        try {
 
-            // 2. バックエンドからデータ取得
-            const userData = await userService.getUserById(currentUser.userId);
+            const userData = await userService.getUserById(id);
 
             // 3. 正常系：データがある場合
             setName(userData.name);
@@ -50,11 +57,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setSelfIntroduction(userData.SelfIntroduction || '');
             setIsProfileComplete(true);
 
-        } catch (err:any) {
+        } catch (err: any) {
             // 4. 異常系：404 (Not Found) や 認証エラーの場合
             // --- 404 エラー（データなし）の判定を行う ---
             if (err.response && err.response.status === 404) {
-                console.log("ユーザーがDBに存在しません（404）。ログアウト状態にします。");
+                console.log("ユーザーがDBに存在しません（404）。プロフィール未完成状態に設定します。");
             } else {
                 console.error("Auth check failed in DB:", err);
                 handleLogoutState();

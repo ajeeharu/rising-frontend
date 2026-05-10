@@ -6,6 +6,7 @@ import {
 import loginImage from "../../../assets/images/login.jpg";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import { userService } from '../../../api/services/user';
 
 // 画面表示の状態を管理する型
 type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp' | 'forgotPassword' | 'resetPasswordSubmit';
@@ -78,21 +79,46 @@ export const LoginForm = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+
     try {
+      // 1. Cognito 認証
       const { isSignedIn, nextStep } = await signIn({ username: email, password });
 
-      // メール未確認の場合は確認画面へ飛ばす
       if (nextStep.signInStep === 'CONFIRM_SIGN_UP') {
         setStep('confirmSignUp');
         return;
       }
 
       if (isSignedIn) {
+        // 2. ログイン成功直後のユーザー情報取得
         const currentUser = await getCurrentUser();
-        setUserId(currentUser.userId);
+        const sub = currentUser.userId;
         setIsLogIn(true);
-        // --- 追加: ホーム画面へリダイレクト ---
-        navigate('/');
+        setUserId(sub);
+        try {
+          // 3. バックエンドDBにユーザーが存在するか確認
+          const dbUser = await userService.getUserById(sub);
+
+          // --- 存在する場合 ---
+          console.log("DB User found:", dbUser);
+          setIsLogIn(true);
+          setUserId(sub);
+          // 必要に応じてユーザー情報をStateに格納
+          navigate('/');
+
+        } catch (apiErr: any) {
+          // --- 存在しない場合 (404) ---
+          if (apiErr.response && apiErr.response.status === 404) {
+            console.log("User not found in DB. Redirecting to Profile Creation...");
+
+            // IDだけ保持して、プロフィール作成画面（DB登録処理）へ
+            setUserId(sub);
+            navigate('/edit-profile'); // プロフィール作成画面へ遷移
+            // あるいは、ここで自動的に最小限のデータで作成してしまうのもアリです
+          } else {
+            throw apiErr; // 500エラーなどは外側のcatchへ
+          }
+        }
       }
     } catch (err: any) {
       handleAuthError(err);
@@ -129,7 +155,6 @@ export const LoginForm = () => {
       if (userId) {
         setUserId(userId);
         setEmail(email);
-        setIsLogIn(true);
       }
       // 登録成功したら確認コード入力画面へ
       setStep('confirmSignUp');
@@ -259,7 +284,7 @@ export const LoginForm = () => {
                 <p className="mt-10 text-center text-sm text-gray-500">
                   メンバーではありませんか？{' '}
                   <button onClick={() => setStep('signUp')} className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    いますぐ登録
+                    アカウントを作成する
                   </button>
                 </p>
               </>

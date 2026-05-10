@@ -1,6 +1,9 @@
-import { Camera, User, Check } from 'lucide-react';
+import { User, Check } from 'lucide-react';
+import { AVATARS, type AvatarId } from '../constants/avatars';
+import { useState } from 'react';
 
 export const EditProfile = () => {
+  const [selectedAvatar, setSelectedAvatar] = useState<AvatarId>(AVATARS[0].id);
   return (
     <div className="min-h-screen bg-[#f8fafc] text-[#1e293b] p-4 sm:p-8 font-sans">
       {/* メインコンテナ */}
@@ -29,24 +32,47 @@ export const EditProfile = () => {
             <div className="space-y-10">
               {/* アバターセクション */}
               <section className="flex flex-col items-center sm:flex-row sm:gap-8">
-                <div className="relative">
-                  <div className="w-32 h-32 rounded-full ring-4 ring-slate-50 overflow-hidden bg-slate-100 border border-slate-200">
-                    <img
-                      src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-                      alt="Avatar"
-                      className="w-full h-full object-cover"
-                    />
+
+                <div className="mx-autobg-white rounded-xl shadow-md">
+                  <h2 className="text-xl font-bold mb-4">アバターの選択</h2>
+
+                  {/* 現在の選択プレビュー */}
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <img
+                        src={AVATARS.find(a => a.id === selectedAvatar)?.path}
+                        alt="Selected Avatar"
+                        className="w-24 h-24 rounded-full border-4 border-blue-500 object-cover"
+                      />
+                      <span className="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full text-xs">
+                        選択中
+                      </span>
+                    </div>
                   </div>
-                  <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2.5 rounded-full cursor-pointer hover:bg-blue-700 transition-all shadow-lg hover:scale-110">
-                    <Camera size={18} />
-                    <input type="file" className="hidden" />
-                  </label>
-                </div>
-                <div className="mt-4 sm:mt-0 text-center sm:text-left">
-                  <h3 className="font-semibold text-slate-800">プロフィール写真</h3>
-                  <p className="text-sm text-slate-500 mt-1">
-                    JPG, PNG または GIF形式 (最大 2MB)
-                  </p>
+
+                  {/* 4x4 グリッド */}
+                  <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
+                    {AVATARS.map((avatar) => (
+                      <button
+                        key={avatar.id}
+                        onClick={() => setSelectedAvatar(avatar.id)}
+                        className={`relative group rounded-lg overflow-hidden border-2 transition-all
+                          ${selectedAvatar === avatar.id
+                            ? 'border-blue-500 ring-2 ring-blue-200'
+                            : 'border-transparent hover:border-gray-300'}`}
+                      >
+                        <img
+                          src={avatar.path}
+                          alt={avatar.label}
+                          className="w-full h-full object-cover aspect-square"
+                        />
+                        {/* ホバー時のラベル表示 */}
+                        <div className="absolute inset-0 bg-gray-200 bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-gray-800 text-xl">{avatar.label}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </section>
 
