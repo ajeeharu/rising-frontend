@@ -34,10 +34,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const refreshUser = async () => {
         handleLogoutState(); // まずはステートをリセットしてから処理を開始
         setIsLoading(true);
+        let currentUserID = id; // 現在のユーザーIDを保持（後で比較するため）
         // --- 1. Cognitoのチェック (認証) ---
         try {
             const currentUser = await getCurrentUser();
-            setUserId(currentUser.userId);
+            currentUserID = currentUser.userId; // Cognitoから取得したユーザーID
+            setUserId(currentUserID);
             setIsLogIn(true);
         } catch (authErr) {
             // 未ログイン状態ならここで終了（正常な未ログインとして扱う）
@@ -48,8 +50,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // 2. バックエンドからデータ取得
         try {
 
-            const userData = await userService.getUserById(id);
-
+            const userData = await userService.getUserById(currentUserID); 
             // 3. 正常系：データがある場合
             setName(userData.name);
             setEmail(userData.email);
