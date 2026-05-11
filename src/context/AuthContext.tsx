@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth';
 import { userService } from '../api/services/user';
 import type { User } from '../api/types/user';
 
@@ -40,6 +40,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const currentUser = await getCurrentUser();
             currentUserID = currentUser.userId; // Cognitoから取得したユーザーID
             setUserId(currentUserID);
+            // --- 1.5 ユーザー属性（email等）の取得 ---
+            const attributes = await fetchUserAttributes();
+            const currentEmail = attributes.email; // ここでemailが取得できる
+            setEmail(currentEmail || '');
             setIsLogIn(true);
         } catch (authErr) {
             // 未ログイン状態ならここで終了（正常な未ログインとして扱う）
@@ -49,11 +53,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         // 2. バックエンドからデータ取得
         try {
-
-            const userData = await userService.getUserById(currentUserID); 
+            const userData = await userService.getUserById(currentUserID);
             // 3. 正常系：データがある場合
             setName(userData.name);
-            setEmail(userData.email);
             setAvatarUrl(userData.avatarUrl || '');
             setSelfIntroduction(userData.SelfIntroduction || '');
             setIsProfileComplete(true);
