@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth';
 import { userService } from '../api/services/user';
-import type { User } from '../api/types/user';
+import type { UserType } from '../api/types/user';
 
-interface AuthContextType extends User {
+interface AuthContextType extends UserType {
     isLogIn: boolean;
     isProfileComplete: boolean;
     isLoading: boolean; // ローディング状態を追加
@@ -26,8 +26,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [email, setEmail] = useState<string>('');
     const [isLogIn, setIsLogIn] = useState<boolean>(false);
     const [name, setName] = useState<string>('');
-    const [avatarUrl, setAvatarUrl] = useState<string>('');
-    const [SelfIntroduction, setSelfIntroduction] = useState<string>('');
+    const [avatar_url, setAvatarUrl] = useState<string>('');
+    const [self_introduction, setSelfIntroduction] = useState<string>('');
     const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true); // 初期値はtrue
 
@@ -55,9 +55,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const userData = await userService.getUserById(currentUserID);
             // 3. 正常系：データがある場合
-            setName(userData.name);
-            setAvatarUrl(userData.avatarUrl || '');
-            setSelfIntroduction(userData.SelfIntroduction || '');
+            setName(userData.name); 
+            setAvatarUrl(userData.avatar_url || '');
+            setSelfIntroduction(userData.self_introduction || '');
             setIsProfileComplete(true);
 
         } catch (err: any) {
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{
-            userId: id, email, isLogIn, name, avatarUrl, SelfIntroduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete, handleLogoutState
+            sub: id, email, isLogIn, name, avatar_url, self_introduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete, handleLogoutState
         }}>
             {!isLoading && children} {/* チェックが終わるまで子要素を表示しない等の制御が可能 */}
         </AuthContext.Provider>

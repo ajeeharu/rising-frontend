@@ -1,21 +1,56 @@
 import { User, Check } from 'lucide-react';
 import { AVATARS, type AvatarId } from '../constants/avatars';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { userService } from '../api/services/user';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 export const EditProfile = () => {
+  const { sub, email, name, avatar_url, self_introduction, setName,setAvatarUrl,setSelfIntroduction,setIsProfileComplete } = useAuth();
+
+  // フォーム用ステート
   const [selectedAvatar, setSelectedAvatar] = useState<AvatarId>(AVATARS[0].id);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  // 初期データの流し込み
+  useEffect(() => {
+    setName(name || '');
+    setSelfIntroduction(self_introduction || '');
+    setAvatarUrl(avatar_url || '');
+    // URLからIDを逆引きしてセット
+    const currentAvatar = AVATARS.find(a => a.path === avatar_url);
+    if (currentAvatar) setSelectedAvatar(currentAvatar.id);
+  }, [name, self_introduction, avatar_url]);
+
+  // 保存処理
+  const handleSave = async () => {
+    setIsSubmitting(true);
+    try {
+      await userService.createUser({
+        sub: sub!, // CognitoのユーザーIDをそのまま使用
+        name: name,
+        email: email,
+        avatar_url: AVATARS.find(a => a.id === selectedAvatar)?.path || '',
+        self_introduction: self_introduction
+      });
+      setAvatarUrl(AVATARS.find(a => a.id === selectedAvatar)?.path || '');
+      setIsProfileComplete(true); // プロフィール完了フラグを立てる
+      // alert('プロフィールを保存しました！');
+      // 必要に応じてページ遷移やAuthデータの再取得(refreshUser)を行う
+    } catch (error) {
+      console.error('保存エラー:', error);
+    } finally {
+      setIsSubmitting(false);
+      navigate('/'); // 保存後にトップページへ遷移
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] text-[#1e293b] p-4 sm:p-8 font-sans">
       {/* メインコンテナ */}
       <div className="max-w-2xl mx-auto">
-
-        {/* ヘッダー */}
-        {/* <div className="flex items-center justify-between mb-8">
-          <button className="flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors group">
-            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span>設定に戻る</span>
-          </button>
-        </div> */}
 
         {/* メインカード */}
         <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
@@ -91,7 +126,8 @@ export const EditProfile = () => {
                     <input
                       type="text"
                       className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400"
-                      defaultValue="ユーザー名"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -104,33 +140,30 @@ export const EditProfile = () => {
                     rows={4}
                     className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-slate-400 resize-none"
                     placeholder="あなたの卓球の経歴を教えてください"
+                    value={self_introduction}
+                    onChange={(e) => setSelfIntroduction(e.target.value)}
                   />
                 </div>
               </section>
 
               {/* アクションボタン */}
               <div className="flex flex-col sm:flex-row gap-3 pt-6">
-                <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-blue-200 active:scale-[0.98] flex items-center justify-center gap-2">
+                <button
+                  onClick={handleSave}
+                  disabled={isSubmitting}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-blue-200 active:scale-[0.98] flex items-center justify-center gap-2">
                   <Check size={20} />
-                  変更を保存
+                  {isSubmitting ? '保存中...' : '変更を保存'}
                 </button>
-                <button className="flex-1 bg-white hover:bg-slate-50 text-slate-600 font-semibold py-3.5 border border-slate-200 rounded-xl transition-all active:scale-[0.98]">
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex-1 bg-white hover:bg-slate-50 text-slate-600 font-semibold py-3.5 border border-slate-200 rounded-xl transition-all active:scale-[0.98]">
                   キャンセル
                 </button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* 下部リンク */}
-        {/* <div className="mt-8 flex justify-center gap-6">
-          <button className="text-sm font-medium text-slate-400 hover:text-red-500 transition-colors">
-            アカウントの削除
-          </button>
-          <button className="text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors">
-            プライバシーポリシー
-          </button>
-        </div> */}
       </div>
     </div>
   );
