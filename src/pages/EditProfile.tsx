@@ -1,7 +1,7 @@
 import { User, Check } from 'lucide-react';
 import { AVATARS, type AvatarId } from '../constants/avatars';
 import { useState, useEffect } from 'react';
-import { userService } from '../api/services/user';
+import { userService } from '../api/services/UserService';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 

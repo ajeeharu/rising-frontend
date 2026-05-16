@@ -6,7 +6,7 @@ import {
 import loginImage from "../../../assets/images/login.jpg";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
-import { userService } from '../../../api/services/user';
+import { userService } from '../../../api/services/UserService';
 
 // 画面表示の状態を管理する型
 type AuthStep = 'signIn' | 'signUp' | 'confirmSignUp' | 'forgotPassword' | 'resetPasswordSubmit';

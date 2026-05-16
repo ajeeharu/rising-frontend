@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth';
-import { userService } from '../api/services/user';
-import type { UserType } from '../api/types/user';
+import { userService } from '../api/services/UserService';
+import type { UserType } from '../api/types/UserType';
 
 interface AuthContextType extends UserType {
     isLogIn: boolean;
