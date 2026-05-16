@@ -2,17 +2,18 @@ import axios from 'axios';
 import { api } from "../axiosInstance";
 import type { S3UpLoadRequestType, S3UpLoadResponseType } from "../types/VideoType";
 
-const getPresignedUrl = async (params: S3UpLoadRequestType): Promise<S3UpLoadResponseType> => {
-    // axios.post<戻り値の型>(URL, 送信データ)
-    const { data } = await api.post<S3UpLoadResponseType>('get-presigned-url', params);
 
-    return data; // data は S3UpLoadResponseType 型として扱われる
-};
 
 export const uploadVideo = async (file: File, onProgress?: (percent: number) => void) => {
+    const getPresignedUrl = async (params: S3UpLoadRequestType): Promise<S3UpLoadResponseType> => {
+        // axios.post<戻り値の型>(URL, 送信データ)
+        const { data } = await api.post<S3UpLoadResponseType>('get-presigned-url', params);
+
+        return data; // data は S3UpLoadResponseType 型として扱われる
+    };
     try {
         // 1. Laravel API から署名付きURLを取得
-        const  data  = getPresignedUrl({
+        const data = getPresignedUrl({
             file_name: file.name,
             file_type: file.type,
         });
