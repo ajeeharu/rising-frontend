@@ -40,9 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             const currentUser = await getCurrentUser();
             currentUserID = currentUser.userId; // Cognitoから取得したユーザーIDを一時的に保持
             setUserId(currentUser.userId); // Cognitoから取得したユーザーID
-            // --- 1.5 ユーザー属性（email等）の取得 ---
-            const attributes = await fetchUserAttributes();
-            setEmail(attributes.email as string);
+            setEmail(currentUser.loginId);
             setIsLogIn(true);
         } catch (authErr) {
             // 未ログイン状態ならここで終了（正常な未ログインとして扱う）
