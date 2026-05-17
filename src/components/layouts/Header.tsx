@@ -124,7 +124,7 @@ export const Header = () => {
                 <NavLink
                   to="/logoff"
                   onClick={toggleMenu}
-                  className="w-full py-3 px-4 bg-gray-800 text-white rounded-xl font-bold"
+                  className="w-full py-3 px-4 bg-gray-800 text-white text-center rounded-xl font-bold"
                 >
                   ログオフ
                 </NavLink>
@@ -132,7 +132,7 @@ export const Header = () => {
                 <NavLink
                   to="/login"
                   onClick={toggleMenu}
-                  className="block w-full py-3 px-4bg-accent text-white text-center rounded-xl font-bold"
+                  className="w-full py-3 px-4 bg-accent text-white text-center rounded-xl font-bold"
                 >
                   ログイン
                 </NavLink>

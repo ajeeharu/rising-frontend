@@ -38,12 +38,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // --- 1. Cognitoのチェック (認証) ---
         try {
             const currentUser = await getCurrentUser();
-            currentUserID = currentUser.userId; // Cognitoから取得したユーザーID
-            setUserId(currentUserID);
+            currentUserID = currentUser.userId; // Cognitoから取得したユーザーIDを一時的に保持
+            setUserId(currentUser.userId); // Cognitoから取得したユーザーID
             // --- 1.5 ユーザー属性（email等）の取得 ---
             const attributes = await fetchUserAttributes();
-            const currentEmail = attributes.email; // ここでemailが取得できる
-            setEmail(currentEmail || '');
+            setEmail(attributes.email as string);
             setIsLogIn(true);
         } catch (authErr) {
             // 未ログイン状態ならここで終了（正常な未ログインとして扱う）
@@ -55,9 +54,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const userData = await userService.getUserById(currentUserID);
             // 3. 正常系：データがある場合
-            setName(userData.name); 
-            setAvatarUrl(userData.avatar_url || '');
-            setSelfIntroduction(userData.self_introduction || '');
+            setName(userData.name as string); 
+            setAvatarUrl(userData.avatar_url as string);
+            setSelfIntroduction(userData.self_introduction as string);
             setIsProfileComplete(true);
 
         } catch (err: any) {
@@ -91,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{
-            sub: id, email, isLogIn, name, avatar_url, self_introduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete, handleLogoutState
+            sub:id, email, isLogIn, name, avatar_url, self_introduction, isProfileComplete, isLoading, refreshUser, setUserId, setEmail, setName, setAvatarUrl, setSelfIntroduction, setIsLogIn, setIsProfileComplete, handleLogoutState
         }}>
             {!isLoading && children} {/* チェックが終わるまで子要素を表示しない等の制御が可能 */}
         </AuthContext.Provider>
